@@ -2100,6 +2100,10 @@ class FrameworkExtension extends Extension
             $container->getDefinition('messenger.transport.beanstalkd.factory')->addTag('messenger.transport_factory');
         }
 
+        if (ContainerBuilder::willBeAvailable('symfony/kafka-messenger', MessengerBridge\Kafka\Transport\KafkaTransportFactory::class, ['symfony/framework-bundle', 'symfony/messenger'])) {
+            $container->getDefinition('messenger.transport.kafka.factory')->addTag('messenger.transport_factory');
+        }
+
         if ($config['stop_worker_on_signals']) {
             $container->getDefinition('messenger.listener.stop_worker_signals_listener')->replaceArgument(0, $config['stop_worker_on_signals']);
         }
@@ -2160,6 +2164,7 @@ class FrameworkExtension extends Extension
             $container->removeDefinition('messenger.transport.redis.factory');
             $container->removeDefinition('messenger.transport.sqs.factory');
             $container->removeDefinition('messenger.transport.beanstalkd.factory');
+            $container->removeDefinition('messenger.transport.kafka.factory');
             $container->removeAlias(SerializerInterface::class);
         } else {
             $container->getDefinition('messenger.transport.symfony_serializer')
