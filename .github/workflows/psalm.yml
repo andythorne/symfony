@@ -1,6 +1,7 @@
 name: Psalm
 
 on:
+  push: ~
   pull_request: ~
 
 defaults:
